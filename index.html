@@ -3,442 +3,384 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WereVul — Vulnerability Detection & Patch Creation</title>
+  <title>WEREVUL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:       #0d1117;
-      --card:     #161b27;
-      --card2:    #1e2535;
-      --border:   #2a3148;
-      --text:     #e6edf3;
-      --muted:    #8b949e;
-      --cyan:     #00d4e8;
-      --orange:   #ff8c42;
-      --purple:   #9b59f7;
-      --green:    #00c896;
-      --pink:     #ff4d6d;
+      --white: #ffffff;
+      --off:   #f5f5f5;
+      --border: #e8e8e8;
+      --text:  #111111;
+      --muted: #888888;
+      --accent: #111111;
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: var(--bg);
+      font-family: 'Inter', sans-serif;
+      background: var(--white);
       color: var(--text);
-      line-height: 1.6;
     }
 
     /* NAV */
     nav {
       position: sticky; top: 0; z-index: 100;
-      background: rgba(13,17,23,0.92);
-      backdrop-filter: blur(12px);
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border);
-      padding: 0 2rem;
+      padding: 0 3rem;
       display: flex; align-items: center; justify-content: space-between;
-      height: 60px;
+      height: 56px;
     }
     .nav-logo {
-      font-size: 1.25rem; font-weight: 700; letter-spacing: 2px;
-      color: var(--cyan); text-decoration: none;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem; letter-spacing: 3px;
+      color: var(--text); text-decoration: none;
     }
-    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
     .nav-links a {
-      color: var(--muted); text-decoration: none; font-size: 0.875rem;
-      transition: color .2s;
+      font-size: .8rem; font-weight: 500;
+      color: var(--muted); text-decoration: none;
+      letter-spacing: .5px;
+      transition: color .15s;
     }
     .nav-links a:hover { color: var(--text); }
 
-    /* SECTIONS */
-    section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
-
-    h2.section-label {
-      font-size: 0.75rem; font-weight: 600; letter-spacing: 3px;
-      text-transform: uppercase; color: var(--cyan); margin-bottom: .5rem;
-    }
-    h3.section-title {
-      font-size: 2.25rem; font-weight: 700; margin-bottom: 2.5rem;
-    }
-
     /* HERO */
     .hero {
-      min-height: 92vh; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; text-align: center;
-      padding: 4rem 2rem;
-      background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0,212,232,.12) 0%, transparent 60%);
+      border-bottom: 1px solid var(--border);
+      padding: 7rem 3rem 5rem;
+      text-align: center;
     }
-    .hero-badge {
-      display: inline-block; padding: .3rem 1rem;
-      border: 1px solid var(--cyan); border-radius: 999px;
-      font-size: .75rem; letter-spacing: 2px; color: var(--cyan);
-      margin-bottom: 1.5rem; text-transform: uppercase;
+    .hero-tag {
+      display: inline-block;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: .3rem 1rem;
+      font-size: .72rem; font-weight: 600;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 2rem;
     }
     .hero h1 {
-      font-size: clamp(3rem, 10vw, 6rem);
-      font-weight: 800; letter-spacing: 6px;
-      background: linear-gradient(135deg, #fff 40%, var(--cyan));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      margin-bottom: 1rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(7rem, 24vw, 16rem);
+      letter-spacing: 4px; line-height: .88;
+      color: var(--text);
     }
-    .hero .subtitle {
-      font-size: 1.2rem; color: var(--muted); max-width: 540px;
-      margin: 0 auto 2rem;
+    .hero-sub {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1rem, 3vw, 1.6rem);
+      letter-spacing: 8px;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--muted);
+      display: block; margin-top: .75rem;
     }
-    .hero .pronunciation {
-      font-size: .85rem; color: var(--muted);
-      border: 1px solid var(--border); border-radius: 8px;
-      display: inline-block; padding: .4rem 1rem; margin-bottom: 2rem;
-    }
-    .hero .pronunciation span { color: var(--text); font-style: italic; }
-    .btn-group { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
-    .btn {
-      padding: .65rem 1.5rem; border-radius: 8px;
-      font-size: .9rem; font-weight: 600; text-decoration: none;
-      transition: opacity .2s, transform .15s;
-    }
-    .btn:hover { opacity: .85; transform: translateY(-1px); }
-    .btn-primary { background: var(--cyan); color: #000; }
-    .btn-secondary {
-      background: transparent; color: var(--text);
+    .pronunciation {
+      display: inline-flex; align-items: center; gap: .5rem;
+      margin-top: 2.5rem;
       border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: .6rem 1.25rem;
+      font-size: .83rem; color: var(--muted);
+    }
+    .pronunciation strong { color: var(--text); font-style: italic; }
+    .btn-row { display: flex; gap: .75rem; justify-content: center; margin-top: 2rem; }
+    .btn {
+      padding: .6rem 1.4rem; border-radius: 6px;
+      font-size: .83rem; font-weight: 600; text-decoration: none;
+      transition: opacity .15s;
+    }
+    .btn:hover { opacity: .75; }
+    .btn-dark { background: var(--text); color: #fff; }
+    .btn-outline { border: 1px solid var(--border); color: var(--text); }
+
+    /* PAGE WRAPPER */
+    .page { max-width: 980px; margin: 0 auto; padding: 0 2rem; }
+
+    /* SECTION */
+    .section { padding: 4.5rem 0; border-bottom: 1px solid var(--border); }
+    .section:last-child { border-bottom: none; }
+    .section-label {
+      font-size: .68rem; font-weight: 600; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--muted); margin-bottom: .5rem;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.8rem; letter-spacing: 2px;
+      margin-bottom: 2rem;
     }
 
-    /* CARD GRID */
-    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
-    .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; }
-
-    .card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 1.5rem;
-      border-top: 3px solid var(--cyan);
+    /* ABOUT */
+    .about-text {
+      font-size: 1.05rem; line-height: 1.85;
+      color: #444; max-width: 700px;
     }
-    .card.orange { border-top-color: var(--orange); }
-    .card.purple { border-top-color: var(--purple); }
-    .card.green  { border-top-color: var(--green); }
-    .card.pink   { border-top-color: var(--pink); }
-
-    .card-icon { font-size: 1.6rem; margin-bottom: .75rem; }
-    .card h4 { font-size: 1rem; font-weight: 700; margin-bottom: .5rem; }
-    .card p { font-size: .875rem; color: var(--muted); }
-
-    /* PIPELINE */
-    .pipeline {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 1rem; position: relative;
-    }
-    .step {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 10px; padding: 1.25rem 1rem; text-align: center;
-      position: relative;
-    }
-    .step-num {
-      font-size: .7rem; font-weight: 700; letter-spacing: 1px;
-      color: var(--cyan); text-transform: uppercase; margin-bottom: .4rem;
-    }
-    .step h4 { font-size: .875rem; font-weight: 700; margin-bottom: .35rem; }
-    .step p { font-size: .75rem; color: var(--muted); }
-    .step.optional { border-style: dashed; }
-    .step.optional .step-num { color: var(--purple); }
-
-    /* FEATURE LIST */
-    .feature-list { display: flex; flex-direction: column; gap: .75rem; }
-    .feature-item {
-      display: flex; align-items: flex-start; gap: 1rem;
-      background: var(--card); border: 1px solid var(--border);
-      border-left: 3px solid var(--cyan);
-      border-radius: 0 10px 10px 0; padding: 1rem 1.25rem;
-    }
-    .feature-item.orange { border-left-color: var(--orange); }
-    .feature-item.purple { border-left-color: var(--purple); }
-    .feature-item.green  { border-left-color: var(--green); }
-    .feature-item.pink   { border-left-color: var(--pink); }
-    .feature-item strong { font-size: .9rem; }
-    .feature-item span { font-size: .85rem; color: var(--muted); }
+    .about-text strong { color: var(--text); }
 
     /* TEAM */
-    .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1.25rem; }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 1px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
     .team-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 1.5rem 1rem; text-align: center;
+      background: var(--white);
+      padding: 1.75rem 1.25rem;
+      text-align: center;
+      transition: background .15s;
     }
+    .team-card:hover { background: var(--off); }
     .avatar {
-      width: 64px; height: 64px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--off);
+      border: 1px solid var(--border);
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.4rem; font-weight: 700; color: #fff;
-      margin: 0 auto .75rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem; color: var(--text);
+      margin: 0 auto .9rem;
     }
-    .team-card h4 { font-size: .9rem; font-weight: 700; }
-    .team-card p { font-size: .775rem; color: var(--muted); margin-top: .2rem; }
+    .team-card h4 { font-size: .85rem; font-weight: 600; line-height: 1.35; }
     .team-card a {
-      display: inline-block; margin-top: .5rem;
-      font-size: .75rem; color: var(--cyan); text-decoration: none;
+      display: inline-block; margin-top: .4rem;
+      font-size: .75rem; color: var(--muted); text-decoration: none;
     }
-    .team-card a:hover { text-decoration: underline; }
+    .team-card a:hover { color: var(--text); }
 
-    /* REPORTS */
-    .report-list { display: flex; flex-direction: column; gap: .75rem; }
-    .report-item {
-      display: flex; align-items: center; gap: 1rem;
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 10px; padding: 1rem 1.25rem;
+    /* TIMELINE */
+    .timeline { display: flex; flex-direction: column; }
+    .tl-item {
+      display: grid;
+      grid-template-columns: 110px 1fr auto;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .tl-item:last-child { border-bottom: none; }
+    .tl-date {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem; letter-spacing: 1px;
+      color: var(--muted);
+    }
+    .tl-content h4 { font-size: .9rem; font-weight: 600; margin-bottom: .2rem; }
+    .tl-content p { font-size: .8rem; color: var(--muted); }
+    .tl-action a {
+      display: inline-block;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: .4rem .9rem;
+      font-size: .75rem; font-weight: 600;
+      color: var(--text); text-decoration: none;
+      white-space: nowrap;
+      transition: background .15s;
+    }
+    .tl-action a:hover { background: var(--off); }
+    .tl-soon {
+      font-size: .72rem; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase;
+      color: var(--border);
+    }
+
+    /* LINKS */
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .link-card {
+      background: var(--white);
+      padding: 1.5rem;
       text-decoration: none; color: var(--text);
-      transition: border-color .2s;
+      display: flex; align-items: center; gap: 1rem;
+      transition: background .15s;
     }
-    .report-item:hover { border-color: var(--cyan); }
-    .report-icon { font-size: 1.4rem; }
-    .report-item div strong { display: block; font-size: .9rem; }
-    .report-item div span { font-size: .8rem; color: var(--muted); }
-    .report-badge {
-      margin-left: auto; font-size: .7rem; padding: .2rem .6rem;
-      border-radius: 999px; border: 1px solid var(--border); color: var(--muted);
+    .link-card:hover { background: var(--off); }
+    .link-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: var(--off); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0;
     }
-
-    /* DIVIDER */
-    .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+    .link-card h4 { font-size: .88rem; font-weight: 600; margin-bottom: .15rem; }
+    .link-card p { font-size: .77rem; color: var(--muted); }
 
     /* FOOTER */
     footer {
-      text-align: center; padding: 2.5rem;
-      font-size: .8rem; color: var(--muted);
       border-top: 1px solid var(--border);
+      padding: 2rem 3rem;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: .78rem; color: var(--muted);
     }
-    footer strong { color: var(--cyan); }
+    footer strong { color: var(--text); font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px; }
 
     @media (max-width: 600px) {
+      nav { padding: 0 1rem; }
       .nav-links { display: none; }
-      h3.section-title { font-size: 1.6rem; }
+      .hero { padding: 5rem 1.5rem 4rem; }
+      .tl-item { grid-template-columns: 80px 1fr; }
+      .tl-action { grid-column: 1 / -1; }
+      footer { flex-direction: column; gap: .5rem; text-align: center; }
     }
   </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <a class="nav-logo" href="#">WEREVUL</a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
-    <li><a href="#architecture">Architecture</a></li>
-    <li><a href="#features">Features</a></li>
     <li><a href="#team">Team</a></li>
-    <li><a href="#reports">Reports</a></li>
+    <li><a href="#deliverables">Deliverables</a></li>
+    <li><a href="#links">Links</a></li>
   </ul>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-badge">CS491 Senior Project</div>
+  <div class="hero-tag">CS491 &nbsp;·&nbsp; Senior Design Project</div>
   <h1>WEREVUL</h1>
-  <p class="subtitle">Vulnerability Detection and Patch Creation — an LLM-assisted framework for Java repositories.</p>
-  <div class="pronunciation">Pronunciation: <span>"wear-ee-vul"</span> &nbsp;·&nbsp; were (werewolf) + vul (vulnerability)</div>
-  <div class="btn-group">
-    <a class="btn btn-primary" href="https://github.com/YOUR_ORG/werevul" target="_blank">GitHub Repo</a>
-    <a class="btn btn-secondary" href="#about">Learn More</a>
+  <span class="hero-sub">Vulnerability Detection &amp; Patch Creation</span>
+  <div class="pronunciation">
+    Pronunciation: &nbsp;<strong>"wear-ee-vul"</strong>&nbsp; — <em>were</em> (werewolf) + <em>vul</em> (vulnerability) &nbsp;·&nbsp; <em>were</em> or <em>where</em>?
+  </div>
+  <div class="btn-row">
+    <a class="btn btn-dark" href="https://github.com/werevul" target="_blank">GitHub</a>
+    <a class="btn btn-outline" href="#about">Learn More</a>
   </div>
 </div>
 
-<hr class="divider" />
+<div class="page">
 
-<!-- ABOUT -->
-<section id="about">
-  <h2 class="section-label">Project Overview</h2>
-  <h3 class="section-title">What is WereVul?</h3>
-  <div class="grid-2">
-    <div class="card">
-      <div class="card-icon">🎯</div>
-      <h4>Core Goal</h4>
-      <p>Develop an LLM-assisted framework to detect, localize, and propose fixes for security vulnerabilities in Java repositories.</p>
-    </div>
-    <div class="card orange">
-      <div class="card-icon">📂</div>
-      <h4>Input</h4>
-      <p>Any Java source code repository — large-scale or small, open-source or private.</p>
-    </div>
-    <div class="card purple">
-      <div class="card-icon">🔍</div>
-      <h4>Analysis</h4>
-      <p>Static analysis, file/function localization, and LLM-based vulnerability reasoning.</p>
-    </div>
-    <div class="card green">
-      <div class="card-icon">📋</div>
-      <h4>Output</h4>
-      <p>Vulnerability reports with CWE classification, affected code locations, explanations, and suggested patches.</p>
+  <!-- ABOUT -->
+  <div class="section" id="about">
+    <p class="section-label">About</p>
+    <h2 class="section-title">WHAT IS WEREVUL</h2>
+    <p class="about-text">
+      WereVul is an <strong>LLM-assisted framework</strong> that detects, localizes, and proposes fixes
+      for security vulnerabilities in Java repositories. It combines <strong>static analysis</strong> with
+      locally running language models to produce <strong>CWE-classified</strong> vulnerability reports —
+      without ever sending your source code to the cloud.
+    </p>
+  </div>
+
+  <!-- TEAM -->
+  <div class="section" id="team">
+    <p class="section-label">People</p>
+    <h2 class="section-title">THE TEAM</h2>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="avatar">TE</div>
+        <h4>Turan Emre Adıgüzel</h4>
+        <!-- <a href="https://github.com/USERNAME" target="_blank">@username</a> -->
+      </div>
+      <div class="team-card">
+        <div class="avatar">ED</div>
+        <h4>Elif Duman</h4>
+        <!-- <a href="https://github.com/ElifDumand" target="_blank">@ElifDumand</a> -->
+      </div>
+      <div class="team-card">
+        <div class="avatar">UÖ</div>
+        <h4>Umut Övünç Şenol</h4>
+      </div>
+      <div class="team-card">
+        <div class="avatar">MT</div>
+        <h4>Merve Topuz</h4>
+      </div>
+      <div class="team-card">
+        <div class="avatar">ZT</div>
+        <h4>Zeynep Taşevli</h4>
+      </div>
     </div>
   </div>
-</section>
 
-<hr class="divider" />
+  <!-- DELIVERABLES / TIMELINE -->
+  <div class="section" id="deliverables">
+    <p class="section-label">Chronological</p>
+    <h2 class="section-title">DELIVERABLES</h2>
+    <div class="timeline">
 
-<!-- ARCHITECTURE -->
-<section id="architecture">
-  <h2 class="section-label">System Architecture</h2>
-  <h3 class="section-title">How WereVul Works</h3>
-  <div class="pipeline">
-    <div class="step">
-      <div class="step-num">Step 1</div>
-      <h4>Java Repository</h4>
-      <p>Target source code base for analysis.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">Step 2</div>
-      <h4>Static Analysis</h4>
-      <p>Initial code scan &amp; parsing.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">Step 3</div>
-      <h4>Localization</h4>
-      <p>File &amp; function targeting.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">Step 4</div>
-      <h4>AI Detection</h4>
-      <p>LLM vulnerability identification.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">Step 5</div>
-      <h4>CWE Class</h4>
-      <p>Categorize vulnerability types.</p>
-    </div>
-    <div class="step optional">
-      <div class="step-num">Step 6 · Optional</div>
-      <h4>Patch Gen</h4>
-      <p>Automated code repair.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">Step 7</div>
-      <h4>Testing</h4>
-      <p>Compilation &amp; verification.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">Step 8</div>
-      <h4>Final Report</h4>
-      <p>Validated security result.</p>
+      <!-- ── ENTRY TEMPLATE ──────────────────────────────────────────
+           To add a new entry, copy a <div class="tl-item"> block.
+           For a link: replace <span class="tl-soon"> with:
+           <a href="reports/yourfile.pdf" target="_blank">View PDF</a>
+           ──────────────────────────────────────────────────────────── -->
+
+      <div class="tl-item">
+        <div class="tl-date">OCT 2025</div>
+        <div class="tl-content">
+          <h4>Project Kickoff &amp; Proposal</h4>
+          <p>Team formation, problem definition, and project scope.</p>
+        </div>
+        <div class="tl-action"><span class="tl-soon">—</span></div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-date">NOV 2025</div>
+        <div class="tl-content">
+          <h4>Specification Report</h4>
+          <p>System requirements, architecture design, technical planning.</p>
+        </div>
+        <div class="tl-action"><span class="tl-soon">Soon</span></div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-date">DEC 2025</div>
+        <div class="tl-content">
+          <h4>Analysis &amp; Design Report</h4>
+          <p>Detailed system design, data flow, and component breakdown.</p>
+        </div>
+        <div class="tl-action"><span class="tl-soon">Soon</span></div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-date">MAR 2026</div>
+        <div class="tl-content">
+          <h4>Implementation &amp; Testing Report</h4>
+          <p>Final implementation, evaluation results, and conclusions.</p>
+        </div>
+        <div class="tl-action"><span class="tl-soon">Soon</span></div>
+      </div>
+
     </div>
   </div>
-</section>
 
-<hr class="divider" />
-
-<!-- FEATURES -->
-<section id="features">
-  <h2 class="section-label">Capabilities</h2>
-  <h3 class="section-title">Key Features</h3>
-  <div class="feature-list">
-    <div class="feature-item">
-      <div><strong>Detects vulnerabilities in repositories</strong><br><span>Deep context scanning across project files</span></div>
-    </div>
-    <div class="feature-item orange">
-      <div><strong>Identifies affected files, functions, and code lines</strong><br><span>Precise localization down to line level</span></div>
-    </div>
-    <div class="feature-item purple">
-      <div><strong>Classifies findings using CWE categories</strong><br><span>Standardized weakness taxonomy</span></div>
-    </div>
-    <div class="feature-item green">
-      <div><strong>Supports locally running AI models for code privacy</strong><br><span>On-premise execution — source code never leaves your environment</span></div>
-    </div>
-    <div class="feature-item pink">
-      <div><strong>Produces clear and actionable vulnerability reports</strong><br><span>Developer-friendly insights</span></div>
-    </div>
-    <div class="feature-item" style="border-left-color:#7c4dff; border-style: dashed;">
-      <div><strong>Generates AI-assisted repair suggestions</strong> <em style="font-size:.75rem; color:var(--purple);">(optional)</em><br><span>Automated patch proposal with compilation &amp; regression verification</span></div>
+  <!-- LINKS -->
+  <div class="section" id="links">
+    <p class="section-label">Resources</p>
+    <h2 class="section-title">LINKS</h2>
+    <div class="links-grid">
+      <a class="link-card" href="https://github.com/werevul" target="_blank">
+        <div class="link-icon">⌥</div>
+        <div>
+          <h4>GitHub Organization</h4>
+          <p>Source code &amp; repositories</p>
+        </div>
+      </a>
+      <a class="link-card" href="#" target="_blank">
+        <div class="link-icon">◈</div>
+        <div>
+          <h4>Presentation Slides</h4>
+          <p>Project introduction deck</p>
+        </div>
+      </a>
     </div>
   </div>
-</section>
 
-<hr class="divider" />
+</div>
 
-<!-- INNOVATION -->
-<section>
-  <h2 class="section-label">Innovation</h2>
-  <h3 class="section-title">What Makes WereVul Different</h3>
-  <div class="feature-list">
-    <div class="feature-item">
-      <div><strong>Dual-approach vulnerability detection</strong><br><span>Combines static analysis with local code language models</span></div>
-    </div>
-    <div class="feature-item orange">
-      <div><strong>Optimized context windows</strong><br><span>Reduces large repositories before sending code to the AI model</span></div>
-    </div>
-    <div class="feature-item pink">
-      <div><strong>Complete data privacy &amp; security</strong><br><span>Keeps source code inside the local environment — no cloud upload required</span></div>
-    </div>
-    <div class="feature-item purple">
-      <div><strong>Strict patch verification</strong><br><span>Does not accept an AI-generated patch without validation</span></div>
-    </div>
-    <div class="feature-item green">
-      <div><strong>Automated safety checks</strong><br><span>Uses Proof-of-Vulnerability and regression tests</span></div>
-    </div>
-  </div>
-</section>
-
-<hr class="divider" />
-
-<!-- TEAM -->
-<section id="team">
-  <h2 class="section-label">The Team</h2>
-  <h3 class="section-title">Meet WereVul</h3>
-  <div class="team-grid">
-    <div class="team-card">
-      <div class="avatar">TE</div>
-      <h4>Turan Emre Adıgüzel</h4>
-      <p>CS491 · Team Member</p>
-      <!-- <a href="https://github.com/USERNAME" target="_blank">@username</a> -->
-    </div>
-    <div class="team-card">
-      <div class="avatar">ED</div>
-      <h4>Elif Duman</h4>
-      <p>CS491 · Team Member</p>
-      <!-- <a href="https://github.com/USERNAME" target="_blank">@username</a> -->
-    </div>
-    <div class="team-card">
-      <div class="avatar">UÖ</div>
-      <h4>Umut Övünç Şenol</h4>
-      <p>CS491 · Team Member</p>
-    </div>
-    <div class="team-card">
-      <div class="avatar">MT</div>
-      <h4>Merve Topuz</h4>
-      <p>CS491 · Team Member</p>
-    </div>
-    <div class="team-card">
-      <div class="avatar">ZT</div>
-      <h4>Zeynep Taşevli</h4>
-      <p>CS491 · Team Member</p>
-    </div>
-  </div>
-</section>
-
-<hr class="divider" />
-
-<!-- REPORTS -->
-<section id="reports">
-  <h2 class="section-label">Resources</h2>
-  <h3 class="section-title">Reports &amp; Links</h3>
-  <div class="report-list">
-    <a class="report-item" href="https://github.com/YOUR_ORG/werevul" target="_blank">
-      <span class="report-icon">💻</span>
-      <div><strong>GitHub Repository</strong><span>Source code, documentation, and issue tracker</span></div>
-      <span class="report-badge">GitHub</span>
-    </a>
-    <a class="report-item" href="#" target="_blank">
-      <span class="report-icon">📄</span>
-      <div><strong>Project Report — Phase 1</strong><span>Initial design and requirements specification</span></div>
-      <span class="report-badge">PDF</span>
-    </a>
-    <a class="report-item" href="#" target="_blank">
-      <span class="report-icon">📊</span>
-      <div><strong>Presentation Slides</strong><span>Project overview and system architecture</span></div>
-      <span class="report-badge">Slides</span>
-    </a>
-  </div>
-</section>
-
-<!-- FOOTER -->
 <footer>
-  <strong>WEREVUL</strong> — Vulnerability Detection &amp; Patch Creation<br />
-  CS491 Senior Project &nbsp;·&nbsp; Bilkent University
+  <strong>WEREVUL</strong>
+  <span>CS491 Senior Design Project &nbsp;·&nbsp; Bilkent University</span>
 </footer>
 
 </body>
