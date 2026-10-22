@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reports — WEREVUL</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #fff; color: #111; }
+    nav {
+      position: sticky; top: 0;
+      background: rgba(255,255,255,0.92); backdrop-filter: blur(10px);
+      border-bottom: 1px solid #e8e8e8;
+      padding: 0 3rem; height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 3px; color: #111; text-decoration: none; }
+    .back { font-size: .8rem; color: #888; text-decoration: none; }
+    .back:hover { color: #111; }
+    .page { max-width: 860px; margin: 0 auto; padding: 3.5rem 2rem; }
+    .page-title { font-family: 'Bebas Neue', sans-serif; font-size: 2.8rem; letter-spacing: 2px; margin-bottom: .5rem; }
+    .page-sub { font-size: .85rem; color: #888; margin-bottom: 2.5rem; }
+    .file-list { display: flex; flex-direction: column; }
+    .file-item {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1rem 0; border-bottom: 1px solid #e8e8e8;
+      text-decoration: none; color: #111;
+      transition: background .15s;
+    }
+    .file-item:last-child { border-bottom: none; }
+    .file-item:hover { background: #f5f5f5; padding-left: .5rem; border-radius: 6px; }
+    .file-icon { font-size: 1.3rem; width: 36px; text-align: center; flex-shrink: 0; }
+    .file-name { font-size: .9rem; font-weight: 600; }
+    .file-desc { font-size: .78rem; color: #888; margin-top: .1rem; }
+    .file-date { margin-left: auto; font-size: .75rem; color: #bbb; white-space: nowrap; }
+    .badge {
+      font-size: .65rem; font-weight: 600; letter-spacing: 1px;
+      padding: .2rem .55rem; border-radius: 4px;
+      border: 1px solid #e8e8e8; color: #888; white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="/">WEREVUL</a>
+  <a class="back" href="/">← Back</a>
+</nav>
+<div class="page">
+  <h1 class="page-title">REPORTS</h1>
+  <p class="page-sub">Project deliverables — add PDF files to the /reports folder and list them below.</p>
+  <div class="file-list">
+
+    <!-- ── ADD FILES HERE ──────────────────────────────────────────
+         Copy a file-item block and update href, name, desc, date.
+         ──────────────────────────────────────────────────────────── -->
+
+    <div class="file-item" style="opacity:.4; pointer-events:none;">
+      <div class="file-icon">📄</div>
+      <div>
+        <div class="file-name">Specification Report</div>
+        <div class="file-desc">System requirements &amp; architecture</div>
+      </div>
+      <span class="badge">COMING SOON</span>
+    </div>
+
+    <div class="file-item" style="opacity:.4; pointer-events:none;">
+      <div class="file-icon">📄</div>
+      <div>
+        <div class="file-name">Analysis &amp; Design Report</div>
+        <div class="file-desc">Detailed system design &amp; component breakdown</div>
+      </div>
+      <span class="badge">COMING SOON</span>
+    </div>
+
+    <div class="file-item" style="opacity:.4; pointer-events:none;">
+      <div class="file-icon">📄</div>
+      <div>
+        <div class="file-name">Implementation &amp; Testing Report</div>
+        <div class="file-desc">Final results &amp; evaluation</div>
+      </div>
+      <span class="badge">COMING SOON</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
